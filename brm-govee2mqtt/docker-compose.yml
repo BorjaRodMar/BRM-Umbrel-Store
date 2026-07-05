@@ -1,0 +1,15 @@
+version: "3.7"
+
+services:
+  app_proxy:
+    environment:
+      APP_HOST: brm-govee2mqtt_server_1
+      APP_PORT: 8056
+
+  server:
+    image: ghcr.io/wez/govee2mqtt:latest
+    restart: on-failure
+    environment:
+      TZ: Europe/Madrid
+      GOVEE_MQTT_HOST: "192.168.7.79"
+      GOVEE_MQTT_PORT: "1883"

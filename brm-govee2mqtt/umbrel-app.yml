@@ -1,0 +1,23 @@
+manifestVersion: 1
+id: brm-govee2mqtt
+category: automation
+name: Govee2MQTT
+version: "2026.04.12"
+tagline: Puente Govee a MQTT con discovery para Home Assistant
+description: >-
+  Expone dispositivos Govee (Platform API / LAN) como entidades MQTT
+  con Home Assistant discovery. Requiere un broker MQTT (Mosquitto)
+  y una API key de Govee, que se configura en local tras la
+  instalación editando el docker-compose de la app.
+developer: Wez Furlong
+website: https://github.com/wez/govee2mqtt
+repo: https://github.com/wez/govee2mqtt
+support: https://github.com/wez/govee2mqtt/issues
+port: 8056
+icon: https://raw.githubusercontent.com/BorjaRodMar/brm-umbrel-store/main/brm-govee2mqtt/icon.svg
+gallery: []
+path: ""
+defaultUsername: ""
+defaultPassword: ""
+submitter: BorjaRodMar
+submission: https://github.com/BorjaRodMar/brm-umbrel-store
