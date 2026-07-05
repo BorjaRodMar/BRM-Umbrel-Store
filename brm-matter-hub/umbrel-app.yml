@@ -2,7 +2,7 @@ manifestVersion: 1
 id: brm-matter-hub
 # El icono es opcional; sustituye por una URL propia o déjalo y ponlo luego.
 icon: https://raw.githubusercontent.com/BorjaRodMar/brm-umbrel-store/main/brm-matter-hub/icon.svg
-category: networking
+category: For Home Assistant
 name: Matter Hub
 version: "latest"
 tagline: Expone entidades de Home Assistant a Matter (Alexa)
