@@ -1,6 +1,6 @@
 manifestVersion: 1
 id: brm-govee2mqtt
-category: automation
+category: For Home Assistant
 name: Govee2MQTT
 version: "2026.04.12"
 tagline: Puente Govee a MQTT con discovery para Home Assistant
