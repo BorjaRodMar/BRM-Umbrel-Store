@@ -84,29 +84,34 @@ Notas:
 Requiere un broker MQTT accesible desde el host (app **Mosquitto** de Umbrel,
 puerto 1883) y una cuenta Ring con **2FA** activado.
 
-A diferencia de las otras apps, **no hay secreto que editar en el compose**: el
-refresh token de Ring se genera desde la web UI de la app (puerto 55123) y se
-guarda en `/data/ring-state.json`. Tras instalar, abre:
+**Tras instalar hay que crear el `config.json` a mano.** ring-mqtt v5 NO lo
+autogenera desde variables de entorno en una instalación limpia: si falta
+`/data/config.json` el contenedor arranca, avisa y se apaga. Averigua la ruta
+del volumen y crea el fichero apuntando a tu broker:
+
+    DATADIR=$(sudo docker inspect brm-ring-mqtt_server_1 --format '{{ range .Mounts }}{{ if eq .Destination "/data" }}{{ .Source }}{{ end }}{{ end }}')
+    printf '{
+  "mqtt_url": "mqtt://192.168.7.79:1883"
+}
+' | sudo tee "$DATADIR/config.json"
+    sudo umbreld client apps.restart.mutate --appId brm-ring-mqtt
+
+Ajusta la IP a la de tu broker. Después, el token de Ring (2FA) se genera desde
+la web UI de la app (puerto 55123) y se guarda en `/data/ring-state.json`. Abre:
 
     http://<ip-o-host>:55123
 
-Introduce usuario/contraseña de Ring y el código 2FA. El token queda guardado
-y se renueva solo. Verifica que la conexión MQTT apunta a tu broker
-(`mqtt://192.168.7.79:1883`); si saliera el valor por defecto `auto`, ponlo a
-mano y guarda.
+Introduce usuario/contraseña de Ring y el código 2FA. El token queda guardado y
+se renueva solo.
 
 Notas:
 
 - Usa `network_mode: host` para el streaming de cámaras: bincula directamente
   la web UI (55123), RTSP (8554) y go2rtc/WebRTC (8555) en la IP del host, de
-  modo que Home Assistant pueda consumir los streams. Para solo alarma/sensores
-  también funciona en bridge, pero host mode evita que go2rtc anuncie IPs
-  internas de Docker inalcanzables.
-- `MQTTHOST`/`MQTTPORT` en el compose no son secretos (IP LAN del broker); solo
-  se leen en el primer arranque para generar `/data/config.json`.
-- El token vive en `app-data/brm-ring-mqtt/data/`. Haz backup de ese
-  directorio; sobrevive a reinicios y actualizaciones, pero **se borra al
-  desinstalar** la app (habría que repetir el 2FA).
+  modo que Home Assistant pueda consumir los streams.
+- El `config.json` y el token viven en `app-data/brm-ring-mqtt/data/`. Haz
+  backup de ese directorio; sobrevive a reinicios y actualizaciones, pero **se
+  borra al desinstalar** la app (habría que recrear el config y repetir el 2FA).
 - En Home Assistant, con la integración **MQTT** activa, los dispositivos Ring
   aparecen solos vía MQTT discovery.
 
