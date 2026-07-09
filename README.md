@@ -18,6 +18,7 @@ Las apps aparecerán en la tienda "BRM Umbrel Store".
 |---|---|---|
 | **Matter Hub** | [home-assistant-matter-hub](https://github.com/riddix/home-assistant-matter-hub): bridge que expone entidades de Home Assistant a controladores Matter (Alexa, Google Home…) | 8482 |
 | **Govee2MQTT** | [wez/govee2mqtt](https://github.com/wez/govee2mqtt): puente de dispositivos Govee a MQTT con Home Assistant discovery | 8056 |
+| **Ring-MQTT** | [tsightler/ring-mqtt](https://github.com/tsightler/ring-mqtt): puente de dispositivos Ring (alarma, sensores, timbres, cámaras) a MQTT con Home Assistant discovery y pasarela RTSP para streaming | 55123 |
 | **Onda** | Extrae el audio de vídeos de YouTube y tracks de SoundCloud a MP3 (yt-dlp + FFmpeg). Solo para contenido propio o con licencia libre | 8480 |
 
 ---
@@ -78,6 +79,37 @@ Notas:
 - En Home Assistant, con la integración **MQTT** apuntando al broker, los
   dispositivos aparecen solos vía MQTT discovery.
 
+### Ring-MQTT
+
+Requiere un broker MQTT accesible desde el host (app **Mosquitto** de Umbrel,
+puerto 1883) y una cuenta Ring con **2FA** activado.
+
+A diferencia de las otras apps, **no hay secreto que editar en el compose**: el
+refresh token de Ring se genera desde la web UI de la app (puerto 55123) y se
+guarda en `/data/ring-state.json`. Tras instalar, abre:
+
+    http://<ip-o-host>:55123
+
+Introduce usuario/contraseña de Ring y el código 2FA. El token queda guardado
+y se renueva solo. Verifica que la conexión MQTT apunta a tu broker
+(`mqtt://192.168.7.79:1883`); si saliera el valor por defecto `auto`, ponlo a
+mano y guarda.
+
+Notas:
+
+- Usa `network_mode: host` para el streaming de cámaras: bincula directamente
+  la web UI (55123), RTSP (8554) y go2rtc/WebRTC (8555) en la IP del host, de
+  modo que Home Assistant pueda consumir los streams. Para solo alarma/sensores
+  también funciona en bridge, pero host mode evita que go2rtc anuncie IPs
+  internas de Docker inalcanzables.
+- `MQTTHOST`/`MQTTPORT` en el compose no son secretos (IP LAN del broker); solo
+  se leen en el primer arranque para generar `/data/config.json`.
+- El token vive en `app-data/brm-ring-mqtt/data/`. Haz backup de ese
+  directorio; sobrevive a reinicios y actualizaciones, pero **se borra al
+  desinstalar** la app (habría que repetir el 2FA).
+- En Home Assistant, con la integración **MQTT** activa, los dispositivos Ring
+  aparecen solos vía MQTT discovery.
+
 ### Onda
 
 Sin configuración. El código fuente vive en [`app-src/`](app-src/) y la
@@ -102,6 +134,7 @@ cuando cambia el código.
     umbrel-app-store.yml     # id y nombre de la tienda
     brm-matter-hub/          # manifiesto + compose de Matter Hub
     brm-govee2mqtt/          # manifiesto + compose de Govee2MQTT
+    brm-ring-mqtt/           # manifiesto + compose de Ring-MQTT
     brm-yt2mp3/              # manifiesto + compose de Onda
     app-src/                 # código fuente de Onda
     .github/workflows/       # build multi-arch de la imagen de Onda
