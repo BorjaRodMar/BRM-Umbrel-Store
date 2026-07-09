@@ -1,0 +1,25 @@
+manifestVersion: 1
+id: brm-ring-mqtt
+category: automation
+name: Ring-MQTT
+version: "5"
+tagline: Puente Ring → MQTT (alarma, timbres, sensores, luces, cámaras)
+description: >-
+  Ejecuta el proyecto tsightler/ring-mqtt como app nativa de Umbrel. Puente
+  entre los dispositivos Ring (alarma, sensores, timbres, luces, cámaras) y el
+  broker MQTT local, con Home Assistant MQTT Discovery. El token de Ring (2FA)
+  se genera desde la web UI de la app y se guarda en /data. Incluye pasarela
+  RTSP/go2rtc para streaming de cámaras. Requiere broker MQTT (app Mosquitto).
+developer: tsightler
+website: https://github.com/tsightler/ring-mqtt
+dependencies: []
+repo: https://github.com/tsightler/ring-mqtt
+support: https://github.com/tsightler/ring-mqtt/discussions
+port: 55123
+gallery: []
+path: ""
+defaultUsername: ""
+defaultPassword: ""
+releaseNotes: ""
+submitter: BorjaRodMar
+submission: ""
