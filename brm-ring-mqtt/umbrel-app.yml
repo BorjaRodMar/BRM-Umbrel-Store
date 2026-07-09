@@ -12,6 +12,7 @@ description: >-
   RTSP/go2rtc para streaming de cámaras. Requiere broker MQTT (app Mosquitto).
 developer: tsightler
 website: https://github.com/tsightler/ring-mqtt
+icon: https://raw.githubusercontent.com/BorjaRodMar/brm-umbrel-store/main/brm-ring-mqtt/icon.svg
 dependencies: []
 repo: https://github.com/tsightler/ring-mqtt
 support: https://github.com/tsightler/ring-mqtt/discussions
